@@ -1,0 +1,124 @@
+// NEW
+    void throughput5(ArrayList<Long> s, float runtime) {
+        float bps = 0;
+        float packets = 0; // Number of packets that arrive every #runtime seconds 8/16/32
+        float time = 0; // A variant used to count #runtime seconds everytime
+        int index = 0; // The index of the s ArrayList
+        float base_time = 8; // From where to start counting the #runtime seconds each time
+        // float r = 0;
+
+        while (index != (s.size() - 1)) {
+            index -= packets - 1;
+            packets = 0;
+            // r = 0;
+            for (; time < (base_time + runtime) * 1000;) {
+                packets++;
+                if (index == (s.size() - 1))
+                    break;
+                if (index > 0)
+                    time += s.get(index) - s.get(index - 1); // number of ms that took current (index) package to
+                                                             // arrive.
+                else
+                    time += s.get(index);
+                index++;
+                // r += time / 100;
+            }
+            // System.out.println("Packets from lev: " + packets);
+            bps = ((32 * 8) * packets) / runtime; // Each packet contains 32 bytes, which translates to 32 * 8 bits per
+                                                  // packet. Since I want bits-per-second the formula is this.
+            // System.out.println(bps + "bps");
+            BPS.add(bps);
+            base_time++;
+            time = base_time;
+        }
+    }
+    
+    void throughput1(ArrayList<Long> s, float runtime) {
+        float bps = 0;
+        float packets = 0; // Number of packets that arrive every #runtime seconds
+        float time = 0; // A variant used to count #runtime seconds everytime
+        int index = 0; // The index of the s ArrayList
+        // float base_time = 0; // From where to start counting the #runtime seconds
+        // each time
+        // float r = 0;
+        // while (index != (s.size() - 1)) {
+        for (int i = 8000; i < s.get(s.size() - 1); i++) {
+            // index
+            // index -= packets - 1;
+            packets = 0;
+            // r = 0;
+            for (; time < runtime * 1000;) {
+                // packets++;
+                time += s.get(index) - s.get(index - 1); // number of ms that took current (index) package to
+                                                         // arrive.
+                // r += time / 100;
+            }
+            // System.out.println("Packets from lev: " + packets);
+            bps = ((32 * 8) * packets) / runtime; // Each packet contains 32 bytes, which translates to 32 * 8 bits per
+                                                  // packet. Since I want bits-per-second the formula is this.
+            // System.out.println(bps + "bps");
+            BPS.add(bps);
+            // base_time++;
+            // time = base_time;
+        }
+    }
+    void throughput(ArrayList<Long> systemTimes) {// FIXME GITO
+        // for (int i = 0; i < 8; i++) {
+        // // out2.println(0);
+        // }
+        int packetCounter = 0;
+        for (int i = 8000; i < systemTimes.get(systemTimes.size() - 1); i += 1000) {
+            packetCounter = 0;
+            for (int j = 0; systemTimes.get(j) < i; j++) {
+                if (i - systemTimes.get(j) < 8000) {
+                    packetCounter++;
+                    // System.out.println(i - systemTimes.get(j));
+                }
+            }
+            // System.out.println("Packets from gito: " + packetCounter);
+            double throughput = ((double) packetCounter * 256.0) / 8.0;
+            // each echo packets (without temperature)
+            // consists of 32 bytes => 32*8=256 bits
+            BPS2.add(throughput);
+        }
+    }
+    // NEW2
+    void throughputLAST(ArrayList<Long> s, float runtime) {
+        float bps = 0;
+        float packets = 0; // Number of packets that arrive every #runtime seconds 8/16/32
+        float time = 0; // A variant used to count #runtime seconds everytime
+        int index = 8; // The index of the s ArrayList
+        float base_time = 0; // From where to start counting the #runtime seconds each time
+        int run=0;
+
+        // for (int i = 0; i < s.size(); i++) // assigns the num of packet that arrived first after 8 seconds
+        //     if (s.get(i) >= 8000) {
+        //         index = i;
+        //         break;
+        //     }
+        while (index < s.size()) {
+            while (time <= (runtime) * 1000) {
+                if (index == s.size()) {
+                    break;
+                }
+                if((base_time + runtime) * 1000 - s.get(index) < runtime * 1000){ //λαθοσ γτ ειναι 8κ - 20κ αρα αρχικα τρεχει παραπανω φορες.
+                    time += (s.get(index) - s.get(index - 1)); // number of ms that took current (index) package to arrive.
+                    packets++;
+                }
+                index++;
+                run++;
+                System.out.println(run);
+            }
+            // System.out.println("Packets from lev: " + packets);
+            bps = ((32 * 8) * packets) / (time / 1000); // Each packet contains 32 bytes, which translates to 32 * 8
+                                                        // bits per
+            // packet. Since I want bits-per-second the formula is this.
+            // System.out.println(bps + "bps");
+            BPS.add(bps);
+            // index -= (packets-1);
+            index = 8;  
+            packets = 0;
+            time = 0;
+            base_time++;
+        }
+    }
