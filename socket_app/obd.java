@@ -23,7 +23,7 @@ public class obd {
         byte[] txbuffer;
         byte[] rxbuffer = new byte[11]; // Ithaki sends 11 characters each time
 
-        // // start of datagram
+        // Start of datagram
         DatagramSocket s = new DatagramSocket();
         DatagramPacket host_message;
         DatagramSocket r = new DatagramSocket(clientPort);
@@ -34,7 +34,7 @@ public class obd {
         } catch (Exception e) {
             System.out.println("Error connecting sockets to ithaki: " + e);
         }
-        // end of datagram
+        // End of datagram
 
         String response = "";
         int runtime = 0;
@@ -67,12 +67,12 @@ public class obd {
         System.out.println("Runtime: " + runtime);
         
         // Exporting data:
-        BufferedWriter writer0 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\obd\\engine_runtimes.txt"));
-        BufferedWriter writer1 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\obd\\intake_air_temperatures.txt"));
-        BufferedWriter writer2 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\obd\\throttle_positions.txt"));
-        BufferedWriter writer3 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\obd\\engine_RPMs.txt"));
-        BufferedWriter writer4 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\obd\\vehicle_speeds.txt"));
-        BufferedWriter writer5 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\obd\\coolant_temperatures.txt"));
+        BufferedWriter writer0 = new BufferedWriter(new FileWriter("")); // Add here file destination
+        BufferedWriter writer1 = new BufferedWriter(new FileWriter("")); // Add here file destination
+        BufferedWriter writer2 = new BufferedWriter(new FileWriter("")); // Add here file destination
+        BufferedWriter writer3 = new BufferedWriter(new FileWriter("")); // Add here file destination
+        BufferedWriter writer4 = new BufferedWriter(new FileWriter("")); // Add here file destination
+        BufferedWriter writer5 = new BufferedWriter(new FileWriter("")); // Add here file destination
 
         for (int i = 0; i < engineRunTimes.size(); i++)
             writer0.write(engineRunTimes.get(i) + "\n");
