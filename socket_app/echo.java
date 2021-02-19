@@ -18,8 +18,8 @@ public class echo {
 
         InetAddress hostAddress = InetAddress.getByAddress(hostIP);
 
-        boolean delay = true; //variable to store files depending on code EXXXX / E0000
-        boolean temp = false; //do I ask for temperature values?
+        boolean delay = true; // Variable to store files depending on code EXXXX / E0000
+        boolean temp = false; // Do I ask for temperature values?
         int size = 32;
 
         if (packetInfo.equals("E0000")) {
@@ -31,8 +31,8 @@ public class echo {
             System.out.println("here");
         }
 
-        byte[] txbuffer = packetInfo.getBytes(); // sending information
-        byte[] rxbuffer = new byte[size]; // receiving information
+        byte[] txbuffer = packetInfo.getBytes(); // Sending information
+        byte[] rxbuffer = new byte[size]; // Receiving information
 
         ArrayList<Double> rTimes = new ArrayList<Double>();
         ArrayList<Long> sysTimes = new ArrayList<Long>();
@@ -91,30 +91,19 @@ public class echo {
         // Calculating throughput
         throughput(sysTimes);
 
-        // Exporting data ----------------------------------->NOTE: these files were written in an ubuntu machine
+        // Exporting data
         BufferedWriter writer1 = null;
         BufferedWriter writer2 = null;
         BufferedWriter writer3 = null;
         if (delay) {
             RTO(rTimes); // It only has meaning with delay
-            writer1 = new BufferedWriter(new FileWriter(
-                    "C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\delay\\" + packetInfo + "_G1_response_times_.txt")); // with
-                                                                                                                        // delay
-            writer2 = new BufferedWriter(
-                    new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\delay\\system_times.txt")); // with
-                                                                                                              // delay
-            writer3 = new BufferedWriter(
-                    new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\delay\\G2_throughput.txt")); // with
-                                                                                                               // delay
-        } else {
-            writer1 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\without_delay\\"
-                    + packetInfo + "_G3_response_times.txt")); // without delay
-            writer2 = new BufferedWriter(
-                    new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\without_delay\\system_times.txt")); // without
-                                                                                                                      // delay
-            writer3 = new BufferedWriter(
-                    new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\without_delay\\G4_throughput.txt")); // without
-                                                                                                                       // delay
+            writer1 = new BufferedWriter(new FileWriter("" + packetInfo + "") ); // Add here file destination 
+            writer2 = new BufferedWriter(new FileWriter("") ); // Add here file destination
+            writer3 = new BufferedWriter(new FileWriter("") ); // Add here file destination
+        } else { // Without delay
+            writer1 = new BufferedWriter(new FileWriter(""+ packetInfo + "")); // Add here file destination
+            writer2 = new BufferedWriter(new FileWriter("") ); // Add here file destination
+            writer3 = new BufferedWriter(new FileWriter("") ); // Add here file destination
         }
         for (int i = 0; i < rTimes.size(); i++)
             writer1.write(rTimes.get(i) + "\n");
@@ -149,8 +138,7 @@ public class echo {
                 }
                 index++;
             }
-            bps = ((32 * 8) * (double) packets) / 8; // Each packet contains 32 bytes, which translates to 32 * 8 bits
-                                                     // per second
+            bps = ((32 * 8) * (double) packets) / 8; // Each packet contains 32 bytes, which translates to 32 * 8 bits per second
             BPS.add(bps);
             packets = 0;
             time = 0;
@@ -159,9 +147,9 @@ public class echo {
     }
 
     void RTO(ArrayList<Double> r) throws IOException {
-        PrintWriter writer4 = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\delay\\SRTT.txt");
-        PrintWriter writer5 = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\delay\\sigma.txt");
-        PrintWriter writer6 = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\delay\\RTO.txt");
+        PrintWriter writer4 = new PrintWriter(""); // Add here file destination
+        PrintWriter writer5 = new PrintWriter(""); // Add here file destination
+        PrintWriter writer6 = new PrintWriter(""); // Add here file destination
 
         double a = 0.4, b = 0.7, c = 1.1;
         double SRTT = 0;
@@ -182,7 +170,7 @@ public class echo {
 
     void temperature(String response, String packetInfo) throws FileNotFoundException {
         // 43-45
-        PrintWriter t = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\echo\\temperature\\" + packetInfo + "temp.txt");
+        PrintWriter t = new PrintWriter("" + packetInfo + "temp.txt"); // Add here file destination
         String temperature = response.substring(43, 46) + "°C";
         t.println(temperature);
         System.out.println("The temperature is... " + temperature);
