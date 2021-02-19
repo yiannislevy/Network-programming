@@ -9,7 +9,6 @@ public class copter {
 
     void copterf(byte[] hostIP) throws IOException {
         int clientPort = 48078; //Always this port!
-        // InetAddress hostAddress = InetAddress.getByAddress(hostIP); // Not needed
 
         int packetSize = 114; //Number of characters sent by Ithaki
 
@@ -46,8 +45,8 @@ public class copter {
         r.close();
         
         // Exporting data
-        BufferedWriter out1 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\copter\\motor_values.txt"));
-        BufferedWriter out2 = new BufferedWriter(new FileWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\copter\\altitude_values.txt")); 
+        BufferedWriter out1 = new BufferedWriter(new FileWriter("")); // Add here file destination
+        BufferedWriter out2 = new BufferedWriter(new FileWriter("")); // Add here file destination 
 
         for(int i = 0; i < motor.length; i++)
             out1.write(motor[i] + "\n");
