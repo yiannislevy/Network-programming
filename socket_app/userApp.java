@@ -6,16 +6,16 @@ import javax.sound.sampled.LineUnavailableException;
 public class userApp {
 
     public static void main(String[] args) throws IOException, LineUnavailableException {
-        byte[] hostIP = { (byte) 155, (byte) 207, (byte) 18, (byte) 208 }; // standard
+        byte[] hostIP = { (byte) 155, (byte) 207, (byte) 18, (byte) 208 }; // Standard
 
-        int clientPort = 48007;
-        int serverPort = 38007;
+        int clientPort = #####; //Your port
+        int serverPort = #####; //Contact's port
 
-        String echo_code = "E4222 T00"; //LANGUAGE SENSITIVE 
-        int image_size = 1024;
-        String image_code = "M1147" + "UDP=" + Integer.toString(image_size); // ΜΧΧΧΧCAM=PTZDIR=X for cam2 // (add 128/256/512/1024)
-        String sound_code = "A1479AQ"; // Add here AQ if wanted
-        String obd_code = "V0724";
+        String echo_code = "  "; //LANGUAGE SENSITIVE 
+        int image_size = 1024; // Available choices are: 128, 256, 512, 1024
+        String image_code = " " + "UDP=" + Integer.toString(image_size); // ΜΧΧΧΧCAM=PTZDIR=X for cam2 // (add 128/256/512/1024)
+        String sound_code = " "; // Add AQ at the end without space if wanted
+        String obd_code = " ";
 
         echo e = new echo();
         image i = new image();
@@ -43,23 +43,23 @@ public class userApp {
             switch (input) {
                 case 1:
                     System.out.println("Running Echo...\n");
-                    e.echof(clientPort, serverPort, echo_code, 300, hostIP); //ran in ubuntu
+                    e.echof(clientPort, serverPort, echo_code, 300, hostIP);
                     break;
                 case 2:
                     System.out.println("Running Image...\n");
-                    i.imagef(clientPort, serverPort, image_code, image_size, hostIP); //run in windows
+                    i.imagef(clientPort, serverPort, image_code, image_size, hostIP);
                     break;
                 case 3:
                     System.out.println("Running Sound...\n");
-                    s.soundf(clientPort, serverPort, sound_code, "F", "600", hostIP); //F for songs || T for frequency generator || 000-999 for number of packets // run in windows
+                    s.soundf(clientPort, serverPort, sound_code, "F", "600", hostIP); //F for songs || T for frequency generator || 000-999 for number of packets
                     break;
                 case 4:
-                    System.out.println("Running Copter...\n"); //open jar needed //ran in ubuntu
+                    System.out.println("Running Copter...\n"); //open jar needed (not included in repo)
                     c.copterf(hostIP);
                     break;
                 case 5:
                     System.out.println("Running OBD...\n");
-                    o.obdf(clientPort, serverPort, obd_code, 4, hostIP); //where 4 is the number of (vehicle) minutes to run //ran in ubuntu
+                    o.obdf(clientPort, serverPort, obd_code, 4, hostIP); //where 4 is the number of (vehicle) minutes to run. Vehicle and real time is different.
                     break;
                 case 6:
                     run = false;
