@@ -44,20 +44,20 @@ public class sound {
         byte[] txbuffer = packetInfo.getBytes(); // Sending information
         byte[] rxbuffer = new byte[packetSize]; // Storing temporarily received information
 
-        // start of datagram
+        // Start of datagram
         DatagramSocket s = new DatagramSocket();
         DatagramSocket r = new DatagramSocket(clientPort);
         DatagramPacket host_message = new DatagramPacket(txbuffer, txbuffer.length, hostAddress, serverPort);
         DatagramPacket server_message = new DatagramPacket(rxbuffer, rxbuffer.length);
         try {
             s.connect(hostAddress, serverPort);
-            r.setSoTimeout(5000);
+            r.setSoTimeout(5000); // How much time to wait in ms
         } catch (Exception e) {
             System.out.println("Error connecting SOUND: " + e);
         }
-        // end of datagram
+        // End of datagram
 
-        // Sending code for sure
+        // Making sure request is sent
         int sendCounter = 0; // How many times do I have to try before I send my request
         while (true) {
             try {
@@ -110,8 +110,8 @@ public class sound {
 
     byte[] dpcm(int receiveCounter, byte[][] buffer, int volume) throws FileNotFoundException {
         System.out.println("Demodulating...");
-        PrintWriter sam = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\dpcm\\samples_dpcm.txt");
-        PrintWriter dif = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\dpcm\\differences_dpcm.txt");
+        PrintWriter sam = new PrintWriter(""); // Add here file destination
+        PrintWriter dif = new PrintWriter(""); // Add here file destination
         byte[] bufferOut = new byte[128 * 2 * receiveCounter];
         int help, nibble1, nibble2;
         int sum = 0;
@@ -124,15 +124,15 @@ public class sound {
                 nibble2 = (help >>> 4) & 15; // 15 -> 0000 1111
 
                 help = (nibble2 - 8) * volume; // step 2: substracting 8 and step 3: multiplying with wanted volume
-                dif.println(help); //storing differences
+                dif.println(help); // storing differences
 
                 sum += help;
 
                 bufferOut[++index] = (byte) sum;
-                // sam.println(bufferOut[index]); //storing samples
+                sam.println(bufferOut[index]); // storing samples
 
                 help = (nibble1 - 8) * volume; // volume aka beta
-                dif.println(help); //storing differences
+                dif.println(help); // storing differences
 
                 sum += help;
 
@@ -147,10 +147,10 @@ public class sound {
 
     byte[] aq_dpcm(int receiveCounter, byte[][] buffer) throws FileNotFoundException {
         System.out.println("Demodulating AQ...");
-        PrintWriter sa = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\aq_dpcm\\samples_aqdpcm.txt");
-        PrintWriter me = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\aq_dpcm\\means_aqdpcm.txt");
-        PrintWriter st = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\aq_dpcm\\steps_aqdpcm.txt");
-        PrintWriter dif = new PrintWriter("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\aq_dpcm\\differences_aqdpcm.txt");
+        PrintWriter sa = new PrintWriter(""); // Add here file destination 
+        PrintWriter me = new PrintWriter(""); // Add here file destination
+        PrintWriter st = new PrintWriter(""); // Add here file destination
+        PrintWriter dif = new PrintWriter(""); // Add here file destination
 
         byte[] bufferOut = new byte[2 * (128 * 2) * receiveCounter];
         int[][] samples = new int[receiveCounter][128 * 2];
@@ -160,8 +160,7 @@ public class sound {
         int index = -1;
 
         for (int i = 0; i < receiveCounter; i++) {
-            // step 1: finding and storing mean and step (first 4 bytes of every packet
-            // received)
+            // step 1: finding and storing mean and step (first 4 bytes of every packet received)
             mean[i] = 256 * buffer[i][1] + buffer[i][0]; // 256*msb+lsb
             me.println(mean[i]); //storing means
 
@@ -230,7 +229,7 @@ public class sound {
             where = "dpcm\\";
         }
         AudioInputStream stream = new AudioInputStream(in, pcm, bufferOut.length);
-        File file = new File("C:\\Users\\giann\\Desktop\\Networks\\session2\\sound\\" + where + packetInfo + ".wav");
+        File file = new File("" + where + packetInfo + ".wav"); // Add here file destination
         try {
             AudioSystem.write(stream, Type.WAVE, file);
         } catch (IOException e) {
