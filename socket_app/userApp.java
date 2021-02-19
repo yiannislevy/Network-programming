@@ -73,5 +73,4 @@ public class userApp {
         } while (run);
         choice.close();
     }
-
 }
