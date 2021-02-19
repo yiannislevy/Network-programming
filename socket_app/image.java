@@ -15,7 +15,7 @@ public class image {
         InetAddress hostAddress = InetAddress.getByAddress(hostIP);
         
         byte[] txbuffer = packetInfo.getBytes(); // Sending information aka image code
-        byte[] rxbuffer = new byte[size]; // Storing received information aka ImAgE
+        byte[] rxbuffer = new byte[size]; // Storing received information aka image
         ArrayList<Byte> responses = new ArrayList<Byte>();
 
         // start of datagram
@@ -34,7 +34,7 @@ public class image {
         // end of datagram
 
         // Making the .jpg file
-        String place = "C:\\Users\\giann\\Desktop\\Networks\\session2\\image\\" + packetInfo + ".jpg";
+        String place = "" + packetInfo + ".jpg"; // Add here file destination
         FileOutputStream im = new FileOutputStream(place);
 
         int pcounter = 0; // to check how many packets I receive
@@ -52,8 +52,8 @@ public class image {
             pcounter++;
             for (int i = 0; i < size; i++) {
                 responses.add(rxbuffer[i]);
-                //Exporting the bytes live, as they arrive.
-                im.write(rxbuffer[i]); //Without allocating any memory, I can print the image. Ofcourse I allocate so that I check the start and end delimeter
+                // Exporting the bytes live, as they arrive.
+                im.write(rxbuffer[i]); // Without allocating any memory, I can print the image. Ofcourse I allocate so that I check the start and end delimeter
                 if (bcounter > 0 && responses.get(bcounter - 1) == (byte) 0xFF
                         && responses.get(bcounter) == (byte) 0xD9) { // End delimeter ---> stop fetching data!
                     bcounter++;
